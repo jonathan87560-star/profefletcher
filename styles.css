@@ -1,0 +1,50 @@
+.matrix-background {
+  background: #000;
+  color: #0f0;
+  font-family: 'Courier New', Courier, monospace;
+  overflow: hidden;
+  animation: matrix 8s infinite;
+}
+
+@keyframes matrix {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100%; }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+}
+
+.header h1 {
+  color: #fff;
+}
+
+.university-section {
+  padding: 20px;
+  margin: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.university-section h2 {
+  color: #007bff;
+}
+
+.university-section p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media screen and (max-width: 600px) {
+  .header {
+    padding: 10px;
+  }
+}
