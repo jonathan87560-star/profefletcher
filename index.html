@@ -1,73 +1,774 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            overflow: hidden;
-            font-family: Arial, sans-serif;
-            color: #00ff00;
-            background: black;
-        }
-        .matrix {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            z-index: -1;
-        }
-        .matrix div {
-            position: absolute;
-            bottom: 100%;
-            width: 20px;
-            height: 100px;
-            background: rgba(0, 255, 0, 0.2);
-            animation: fall linear infinite;
-        }
-        @keyframes fall {
-            to { transform: translateY(100vh); }
-        }
-        h1 {
-            text-align: center;
-            padding-top: 20px;
-        }
-        section {
-            margin: 20px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profesor Jonathan Fletcher — Portafolio Académico</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #0d1b2a;
+      --navy-mid:  #162236;
+      --navy-soft: #1e3050;
+      --gold:      #c9a84c;
+      --gold-light:#e8c97a;
+      --gold-pale: #f5e9c8;
+      --cream:     #f9f6ef;
+      --cream-dark:#ede9df;
+      --text-main: #1a1a2e;
+      --text-muted: #6b6e7a;
+      --text-light: #9a9daa;
+      --white:     #ffffff;
+      --radius-sm: 6px;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+      --shadow-sm: 0 2px 8px rgba(13,27,42,0.08);
+      --shadow-md: 0 6px 24px rgba(13,27,42,0.12);
+      --shadow-lg: 0 16px 48px rgba(13,27,42,0.16);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text-main);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(13,27,42,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 4vw;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      color: var(--gold-light);
+      font-size: 1.1rem;
+      letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.875rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+    .nav-toggle { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .nav-toggle span { width: 22px; height: 2px; background: var(--gold-light); display: block; transition: 0.3s; }
+
+    /* ─── HERO ────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      background: var(--navy);
+      display: flex; align-items: center;
+      padding: 80px 4vw 60px;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 80% 50%, rgba(201,168,76,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 80% at 10% 80%, rgba(30,48,80,0.8) 0%, transparent 50%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0; opacity: 0.04;
+      background-image: linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; width: 100%;
+      margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-text { }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      color: var(--gold-light);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    .hero-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      color: var(--white);
+      line-height: 1.15;
+      margin-bottom: 0.5rem;
+    }
+    .hero-name em { color: var(--gold-light); font-style: italic; }
+    .hero-title {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.5);
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+    .hero-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+      max-width: 460px;
+      margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy);
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.03em;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .btn-secondary {
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.75);
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
+
+    .hero-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+    }
+    .hero-avatar {
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy-soft), var(--navy-mid));
+      border: 3px solid rgba(201,168,76,0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin: 0 auto 1.5rem;
+    }
+    .hero-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-top: 1.5rem; }
+    .stat { text-align: center; padding: 1rem; background: rgba(255,255,255,0.04); border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.07); }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--gold-light); display: block; }
+    .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; display: block; }
+
+    /* ─── SECTIONS SHARED ─────────────────────────── */
+    section { padding: 96px 4vw; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-header { margin-bottom: 3.5rem; }
+    .section-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-label::before { content: ''; width: 32px; height: 1px; background: var(--gold); }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      color: var(--text-main);
+      line-height: 1.2;
+    }
+    .section-subtitle { font-size: 1rem; color: var(--text-muted); margin-top: 0.75rem; max-width: 520px; line-height: 1.7; }
+
+    /* ─── ABOUT ───────────────────────────────────── */
+    #about { background: var(--white); }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start; }
+    .about-photo {
+      aspect-ratio: 4/5;
+      background: var(--cream);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--cream-dark);
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    .about-photo-icon { font-size: 3rem; opacity: 0.3; }
+    .about-photo-hint { font-size: 0.78rem; color: var(--text-light); text-align: center; padding: 0 1.5rem; }
+
+    .about-content { }
+    .about-lead { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--text-main); line-height: 1.65; margin-bottom: 1.25rem; }
+    .about-body { font-size: 0.95rem; color: var(--text-muted); line-height: 1.85; margin-bottom: 2rem; }
+    .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 2rem; }
+    .tag {
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      color: var(--text-muted);
+      padding: 5px 14px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+    }
+    .about-info { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .info-item { padding: 1rem 1.25rem; background: var(--cream); border-radius: var(--radius-sm); border: 1px solid var(--cream-dark); }
+    .info-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-light); margin-bottom: 4px; }
+    .info-value { font-size: 0.9rem; font-weight: 500; color: var(--text-main); }
+
+    /* ─── COURSES ─────────────────────────────────── */
+    #courses { background: var(--cream); }
+    .courses-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    .course-card {
+      background: var(--white);
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      color: inherit;
+    }
+    .course-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .course-banner {
+      height: 6px;
+      background: linear-gradient(90deg, var(--navy), var(--navy-soft));
+    }
+    .course-banner.gold { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+    .course-banner.teal { background: linear-gradient(90deg, #1b6ca8, #3b99d4); }
+    .course-body { padding: 1.5rem; }
+    .course-icon {
+      width: 44px; height: 44px;
+      background: var(--cream);
+      border-radius: var(--radius-sm);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      border: 1px solid var(--cream-dark);
+    }
+    .course-code { font-family: 'DM Mono', monospace; font-size: 0.72rem; color: var(--text-light); margin-bottom: 0.4rem; letter-spacing: 0.06em; }
+    .course-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-main); margin-bottom: 0.5rem; }
+    .course-desc { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 1.25rem; }
+    .course-meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .course-badge {
+      font-size: 0.72rem;
+      padding: 3px 10px;
+      border-radius: 100px;
+      background: var(--cream);
+      color: var(--text-muted);
+      border: 1px solid var(--cream-dark);
+    }
+    .course-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 1rem;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--navy);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .course-link:hover { color: var(--gold); border-color: var(--gold); }
+    .course-link::after { content: '→'; }
+
+    /* ─── PUBLICATIONS ────────────────────────────── */
+    #publications { background: var(--navy); }
+    #publications .section-title { color: var(--white); }
+    #publications .section-subtitle { color: rgba(255,255,255,0.5); }
+    .pub-list { display: flex; flex-direction: column; gap: 1.25rem; }
+    .pub-item {
+      display: grid; grid-template-columns: auto 1fr auto;
+      gap: 1.5rem; align-items: start;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-md);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .pub-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(201,168,76,0.25); }
+    .pub-year {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gold);
+      padding-top: 3px;
+      white-space: nowrap;
+    }
+    .pub-info { }
+    .pub-title { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); margin-bottom: 0.4rem; line-height: 1.4; }
+    .pub-venue { font-size: 0.82rem; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+    .pub-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+    .pub-tag {
+      font-size: 0.7rem;
+      padding: 2px 10px;
+      border-radius: 100px;
+      background: rgba(201,168,76,0.1);
+      color: var(--gold-light);
+      border: 1px solid rgba(201,168,76,0.2);
+    }
+    .pub-link {
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-decoration: none;
+      white-space: nowrap;
+      padding-top: 3px;
+      transition: color 0.2s;
+    }
+    .pub-link:hover { color: var(--gold-light); }
+
+    /* ─── TESTIMONIALS ────────────────────────────── */
+    #testimonials { background: var(--white); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
+    .testimonial-card {
+      padding: 1.75rem;
+      background: var(--cream);
+      border: 1px solid var(--cream-dark);
+      border-radius: var(--radius-lg);
+      position: relative;
+    }
+    .testimonial-quote {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      line-height: 1;
+      color: var(--gold);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+    .testimonial-text { font-size: 0.9rem; color: var(--text-muted); line-height: 1.75; margin-bottom: 1.25rem; font-style: italic; }
+    .testimonial-stars { color: var(--gold); font-size: 0.85rem; margin-bottom: 1rem; letter-spacing: 2px; }
+    .testimonial-author { display: flex; align-items: center; gap: 10px; }
+    .testimonial-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--navy);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      color: var(--gold-light);
+      flex-shrink: 0;
+    }
+    .testimonial-name { font-size: 0.85rem; font-weight: 500; color: var(--text-main); }
+    .testimonial-course { font-size: 0.75rem; color: var(--text-light); }
+    .testimonial-add {
+      border: 2px dashed var(--cream-dark);
+      background: transparent;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 0.75rem;
+      min-height: 200px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .testimonial-add:hover { border-color: var(--gold); background: var(--cream); }
+    .add-icon { font-size: 1.5rem; opacity: 0.3; }
+    .add-text { font-size: 0.82rem; color: var(--text-light); text-align: center; }
+
+    /* ─── CONTACT / FOOTER ─────────────────────────── */
+    #contact {
+      background: var(--navy);
+      text-align: center;
+      padding: 80px 4vw;
+    }
+    #contact .section-title { color: var(--white); }
+    #contact .section-subtitle { color: rgba(255,255,255,0.5); max-width: 480px; margin: 0.75rem auto 2.5rem; }
+    .contact-methods { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .contact-chip {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 20px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px;
+      color: rgba(255,255,255,0.7);
+      font-size: 0.85rem;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+    }
+    .contact-chip:hover { border-color: var(--gold); color: var(--gold-light); background: rgba(201,168,76,0.08); }
+    footer {
+      background: rgba(0,0,0,0.3);
+      padding: 1.5rem 4vw;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.78rem; color: rgba(255,255,255,0.3); }
+    .footer-brand { font-family: 'Playfair Display', serif; font-size: 0.85rem; color: var(--gold-light); }
+
+    /* ─── SCROLL REVEAL ───────────────────────────── */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    /* ─── RESPONSIVE ──────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .hero-card { display: none; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo { min-height: 200px; }
+      .about-info { grid-template-columns: 1fr; }
+      .pub-item { grid-template-columns: 1fr; gap: 0.75rem; }
+      .pub-link { align-self: start; }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: 64px; left: 0; right: 0; background: var(--navy); padding: 1rem 2rem 2rem; border-bottom: 1px solid rgba(255,255,255,0.08); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+    }
+  </style>
 </head>
 <body>
-    <div class="matrix">
-        <div style="left: 10%; animation-duration: 3s;"></div>
-        <div style="left: 20%; animation-duration: 4s;"></div>
-        <div style="left: 30%; animation-duration: 5s;"></div>
-        <div style="left: 40%; animation-duration: 6s;"></div>
-        <div style="left: 50%; animation-duration: 3.5s;"></div>
-        <div style="left: 60%; animation-duration: 4.5s;"></div>
-        <div style="left: 70%; animation-duration: 5.5s;"></div>
-        <div style="left: 80%; animation-duration: 6.5s;"></div>
-        <div style="left: 90%; animation-duration: 4s;"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Prof. [Tu Nombre]</span>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">Sobre mí</a></li>
+    <li><a href="#courses">Cursos</a></li>
+    <li><a href="#publications">Publicaciones</a></li>
+    <li><a href="#testimonials">Alumnos</a></li>
+    <li><a href="#contact">Contacto</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-tag">Docente Universitario · Ingeniería</div>
+      <h1 class="hero-name">Dr. <em>[Tu Nombre]</em><br>[Apellido]</h1>
+      <p class="hero-title">Profesor Asociado · [Universidad] · [Departamento]</p>
+      <p class="hero-desc">
+        Docente e investigador apasionado por [tu área]. Comprometido con una educación rigurosa, aplicada y orientada a resolver los desafíos tecnológicos del presente.
+      </p>
+      <div class="hero-ctas">
+        <a href="#courses" class="btn-primary">Ver mis cursos</a>
+        <a href="#contact" class="btn-secondary">Contactarme</a>
+      </div>
     </div>
-    <h1>Interactive Portfolio</h1>
-    <section>
-        <h2>INACAP Classes</h2>
-        <hr/>
-        <p>Class 1: Description</p>
-        <p>Class 2: Description</p>
-    </section>
-    <section>
-        <h2>DUOCUC Classes</h2>
-        <hr/>
-        <p>Class 1: Description</p>
-        <p>Class 2: Description</p>
-    </section>
+    <div class="hero-card">
+      <div class="hero-avatar">TN</div>
+      <p style="text-align:center; font-size:0.9rem; color:rgba(255,255,255,0.75); font-family:'Playfair Display',serif;">Dr. [Tu Nombre]</p>
+      <p style="text-align:center; font-size:0.78rem; color:rgba(255,255,255,0.35); margin-top:4px;">[Universidad] · [Ciudad]</p>
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">5+</span><span class="stat-label">Años</span></div>
+        <div class="stat"><span class="stat-num">4</span><span class="stat-label">Cursos</span></div>
+        <div class="stat"><span class="stat-num">12</span><span class="stat-label">Papers</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div>
+        <div class="about-photo reveal">
+          <div class="about-photo-icon">👤</div>
+          <span class="about-photo-hint">Reemplaza esto con tu foto en el código:<br><code>&lt;img src="foto.jpg" ... /&gt;</code></span>
+        </div>
+      </div>
+      <div class="about-content reveal">
+        <div class="section-header">
+          <p class="section-label">Sobre mí</p>
+          <h2 class="section-title">Ingeniería, docencia<br>e investigación</h2>
+        </div>
+        <p class="about-lead">
+          Soy [Tu Nombre], docente e investigador en [área específica] con más de [X] años de experiencia formando profesionales de Ingeniería.
+        </p>
+        <p class="about-body">
+          Mi trabajo combina la docencia rigurosa con investigación aplicada. Me interesa especialmente [tema de investigación] y su impacto en [industria o campo]. He tenido el privilegio de guiar a cientos de estudiantes en su formación técnica y profesional.
+        </p>
+        <div class="about-tags">
+          <span class="tag">Machine Learning</span>
+          <span class="tag">Sistemas Distribuidos</span>
+          <span class="tag">Programación</span>
+          <span class="tag">[Tu área]</span>
+          <span class="tag">Investigación</span>
+        </div>
+        <div class="about-info">
+          <div class="info-item">
+            <div class="info-label">Institución</div>
+            <div class="info-value">[Universidad]</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Departamento</div>
+            <div class="info-value">[Departamento]</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Grado académico</div>
+            <div class="info-value">Dr. / Mg. [Especialidad]</div>
+          </div>
+          <div class="info-item">
+            <div class="info-label">Email</div>
+            <div class="info-value">tu@email.cl</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COURSES -->
+<section id="courses">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label">Docencia</p>
+      <h2 class="section-title">Mis cursos</h2>
+      <p class="section-subtitle">Selecciona un curso para acceder al material, guías y recursos disponibles para los estudiantes.</p>
+    </div>
+    <div class="courses-grid">
+
+      <!-- CURSO 1 -->
+      <a href="[URL_CURSO_1]" class="course-card reveal">
+        <div class="course-banner"></div>
+        <div class="course-body">
+          <div class="course-icon">⚙️</div>
+          <div class="course-code">ING-101</div>
+          <h3 class="course-name">Fundamentos de Ingeniería</h3>
+          <p class="course-desc">Introducción a los conceptos base de la disciplina, metodología de resolución de problemas y pensamiento sistémico.</p>
+          <div class="course-meta">
+            <span class="course-badge">Pregrado</span>
+            <span class="course-badge">2025</span>
+            <span class="course-badge">Semestral</span>
+          </div>
+          <span class="course-link">Ver curso </span>
+        </div>
+      </a>
+
+      <!-- CURSO 2 -->
+      <a href="[URL_CURSO_2]" class="course-card reveal">
+        <div class="course-banner gold"></div>
+        <div class="course-body">
+          <div class="course-icon">💻</div>
+          <div class="course-code">ING-245</div>
+          <h3 class="course-name">Algoritmos y Estructuras de Datos</h3>
+          <p class="course-desc">Diseño y análisis de algoritmos clásicos, complejidad computacional y estructuras de datos avanzadas.</p>
+          <div class="course-meta">
+            <span class="course-badge">Pregrado</span>
+            <span class="course-badge">2025</span>
+            <span class="course-badge">Semestral</span>
+          </div>
+          <span class="course-link">Ver curso </span>
+        </div>
+      </a>
+
+      <!-- CURSO 3 -->
+      <a href="[URL_CURSO_3]" class="course-card reveal">
+        <div class="course-banner teal"></div>
+        <div class="course-body">
+          <div class="course-icon">🧠</div>
+          <div class="course-code">ING-410</div>
+          <h3 class="course-name">Inteligencia Artificial Aplicada</h3>
+          <p class="course-desc">Modelos de machine learning, redes neuronales y aplicaciones en ingeniería. Proyectos con datos reales.</p>
+          <div class="course-meta">
+            <span class="course-badge">Postgrado</span>
+            <span class="course-badge">2025</span>
+            <span class="course-badge">Anual</span>
+          </div>
+          <span class="course-link">Ver curso </span>
+        </div>
+      </a>
+
+      <!-- PLACEHOLDER NUEVO CURSO -->
+      <a href="#" class="course-card reveal" style="border: 2px dashed var(--cream-dark); display:flex; align-items:center; justify-content:center; min-height:220px; text-align:center; padding:2rem; background:transparent; flex-direction:column; gap:0.75rem;">
+        <div style="font-size:2rem; opacity:0.25;">+</div>
+        <p style="font-size:0.82rem; color:var(--text-light);">Agrega un nuevo<br>curso aquí</p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label" style="color:var(--gold);">Investigación</p>
+      <h2 class="section-title">Publicaciones y proyectos</h2>
+      <p class="section-subtitle">Artículos, conferencias y proyectos de investigación recientes.</p>
+    </div>
+    <div class="pub-list">
+
+      <div class="pub-item reveal">
+        <span class="pub-year">2024</span>
+        <div class="pub-info">
+          <h3 class="pub-title">Título del artículo o proyecto de investigación aquí</h3>
+          <p class="pub-venue">Nombre de la revista / Conferencia · Volumen X, pp. 000–000</p>
+          <div class="pub-tags">
+            <span class="pub-tag">Machine Learning</span>
+            <span class="pub-tag">IEEE</span>
+          </div>
+        </div>
+        <a href="#" class="pub-link">Ver →</a>
+      </div>
+
+      <div class="pub-item reveal">
+        <span class="pub-year">2023</span>
+        <div class="pub-info">
+          <h3 class="pub-title">Segundo artículo o proyecto destacado de tu portafolio</h3>
+          <p class="pub-venue">Revista Latinoamericana de Ingeniería · Vol. 12, pp. 45–61</p>
+          <div class="pub-tags">
+            <span class="pub-tag">Sistemas</span>
+            <span class="pub-tag">Investigación Aplicada</span>
+          </div>
+        </div>
+        <a href="#" class="pub-link">Ver →</a>
+      </div>
+
+      <div class="pub-item reveal">
+        <span class="pub-year">2022</span>
+        <div class="pub-info">
+          <h3 class="pub-title">Tercer trabajo académico: conferencia, tesis o proyecto FONDECYT</h3>
+          <p class="pub-venue">Congreso Chileno de Ingeniería · Santiago, Chile</p>
+          <div class="pub-tags">
+            <span class="pub-tag">Conferencia</span>
+            <span class="pub-tag">FONDECYT</span>
+          </div>
+        </div>
+        <a href="#" class="pub-link">Ver →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-label">Estudiantes</p>
+      <h2 class="section-title">Lo que dicen mis alumnos</h2>
+      <p class="section-subtitle">Comentarios de estudiantes que han cursado mis asignaturas.</p>
+    </div>
+    <div class="testimonials-grid">
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <p class="testimonial-text">El profesor explica los conceptos complejos de manera clara y siempre está dispuesto a resolver dudas. Uno de los mejores cursos de la carrera.</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">MA</div>
+          <div>
+            <div class="testimonial-name">María A.</div>
+            <div class="testimonial-course">ING-245 · 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <p class="testimonial-text">La metodología del curso es muy práctica. Los proyectos reales ayudan a entender para qué sirve realmente lo que aprendemos en clases.</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">JR</div>
+          <div>
+            <div class="testimonial-name">Juan R.</div>
+            <div class="testimonial-course">ING-410 · 2024</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card reveal">
+        <span class="testimonial-quote">"</span>
+        <p class="testimonial-text">El material del portal es muy completo y bien organizado. Poder revisar las clases y recursos en cualquier momento fue fundamental para mi aprendizaje.</p>
+        <div class="testimonial-stars">★★★★★</div>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar">CP</div>
+          <div>
+            <div class="testimonial-name">Camila P.</div>
+            <div class="testimonial-course">ING-101 · 2023</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="testimonial-card testimonial-add reveal">
+        <div class="add-icon">+</div>
+        <p class="add-text">Agrega más comentarios<br>editando el HTML</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label" style="justify-content:center; color:var(--gold);">Contacto</p>
+      <h2 class="section-title" style="color:var(--white);">¿Tienes alguna pregunta?</h2>
+      <p class="section-subtitle">Escríbeme por correo, visita mi perfil académico o conéctate en LinkedIn.</p>
+      <div class="contact-methods">
+        <a href="mailto:tu@email.cl" class="contact-chip">✉ tu@email.cl</a>
+        <a href="[SCHOLAR_URL]" class="contact-chip" target="_blank">🎓 Google Scholar</a>
+        <a href="[LINKEDIN_URL]" class="contact-chip" target="_blank">in LinkedIn</a>
+        <a href="[RESEARCHGATE_URL]" class="contact-chip" target="_blank">ResearchGate</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- FOOTER -->
+<footer style="background:var(--navy);">
+  <span class="footer-copy">© 2025 — Todos los derechos reservados</span>
+  <span class="footer-brand">Prof. [Tu Nombre]</span>
+</footer>
+
+
+<script>
+  /* Scroll reveal */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        const delay = (e.target.dataset.delay || 0);
+        setTimeout(() => e.target.classList.add('visible'), delay);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach((el, i) => {
+    el.dataset.delay = (i % 4) * 80;
+    observer.observe(el);
+  });
+
+  /* Active nav on scroll */
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 100) current = s.id;
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current
+        ? 'var(--gold-light)' : '';
+    });
+  });
+</script>
+
 </body>
 </html>
